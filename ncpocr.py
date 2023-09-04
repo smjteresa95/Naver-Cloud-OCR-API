@@ -14,7 +14,7 @@ config = configparser.ConfigParser()
 config.read(r'C:\Users\msong\Desktop\Bootcamp\bitcamp\Project KINNI\VisionAPI\vision_api\config.ini')
 
 
-image_url = 'https://sitem.ssgcdn.com/84/22/80/qlty/1000034802284_q1.jpg'
+image_url = 'https://sitem.ssgcdn.com/29/80/97/qlty/1000004978029_q1.jpg'
 
 
 #json 형식으로 데이터 뽑아온 후 텍스트로 바꿔오기
@@ -130,16 +130,33 @@ def get_report_num(data):
 
 
 
-#1회 제공량 얻어오기
-def get_serving_size(data):
+#1회 제공량 얻어오기(param: string)
+def get_serving_size(text):
 
-    # 경우의 수
-    # '1개(30g)당', ''1개(25', '1개(30g)당', "(30", '100g당', '100g', '1개(110g)당'
+    # 지정해 준 keyword 앞에 위치한 value 바로 앞에 위치 한 value를 가지고 오거나
+    # keyword를 포함하는 value를 가지고 온다. 
+    # keywords = ['g)당', 'g당', 'g 당', '당']
 
+    # '개(/d+g)당', 'g당', ' g당' 이 형식으로 나와있는 것들을 찾고
+    serving_size_patterns = r'개?\s*[\(]?(\d+\s*(?:g|mg|l|ml))\s*[\)]?\s*당'
+    match = re.search(serving_size_patterns, text)
 
-    # 100g당 이 하나의 value로 존재하면 100을 return 하면 되고, 
-    # 없으면 지정해 준 keyword 앞에 위치한 value 중에서 
-    keywords = ['g)당', 'g당', 'g 당', '당']
+    if match:
+        value = match.group(1)
+        print(value)
+        # 찾은 부분 안에서 숫자만 추출해낸다.
+        refined_pattern = r'(\d{2,})'
+        match = re.search(refined_pattern, value)
+
+        if match:
+            return match.group(1)
+        
+        else:
+            return None
+    
+    else: 
+        return None
+    
 
 
 
@@ -167,6 +184,7 @@ def get_next_num_after_keyword(data, keyword):
 
 
 
+
 def get_kcal_value(data):
     if '영양정보' in data:
         for i, item in enumerate(data):
@@ -180,7 +198,6 @@ def get_kcal_value(data):
 
 
 def get_nutri_value(text, keyword):
-
     pattern = r'{}\s*(?:g)?\s*(\d+[\,]?\d*\.?\d*|\.\d+)\s*(?:g|mg)?'.format(keyword)
     match = re.search(pattern, text)
     if match:
@@ -193,15 +210,18 @@ def get_nutri_value(text, keyword):
 data = fetch_data(image_url)
 
 # data = ['제품명 :', '팡올레', '식품유형 :', '빵류(가열하지', '않고', '섭취하는', '냉동식품)', '원재료명 :', '밀가루,스타터(밀가루,정제수,정제소금),계란,설탕,바터(우유),유채유,효모,탈지', '분유,글리세린지방산에스테르,정제소금,밀단백,밀글루텐,당근추출물,비타민C,', '우유단백', '밀,계란,우유', '함유', '제조원 :', 'BRIOCHE', 'PASQUIER', 'AUBIGNY', '원산지 :', '프랑스', '내용량 :', '280g(1,044kcal)', '업소명 및', '(주)에스에이치에스', '전화:070-7136-5973', '소재지 :']
-print(data)
+# print(data)
 # # serving = get_next_num_after_keyword(data, '내용량')
 # # print(serving)
 
-product_name = get_product_name(data)
-print(product_name)
+# product_name = get_product_name(data)
+# print(product_name)
 
-# nutri_data = list_to_string(data)
-# print(nutri_data)
+nutri_data = list_to_string(data)
+print(nutri_data)
+
+serving_size = get_serving_size(nutri_data)
+print(serving_size)
 
 # carb = get_nutri_value(nutri_data, '트랜스지방')
 # print(carb)
