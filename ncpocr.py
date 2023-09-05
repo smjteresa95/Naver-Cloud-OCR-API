@@ -14,9 +14,6 @@ config = configparser.ConfigParser()
 config.read(r'C:\Users\msong\Desktop\Bootcamp\bitcamp\Project KINNI\VisionAPI\vision_api\config.ini')
 
 
-image_url = 'https://sitem.ssgcdn.com/29/80/97/qlty/1000004978029_q1.jpg'
-
-
 #json 형식으로 데이터 뽑아온 후 텍스트로 바꿔오기
 def fetch_data(image_url):
 
@@ -60,8 +57,7 @@ def fetch_data(image_url):
         print("The images key is missing or empty")
 
 
-
-
+#list를 문자열로 변환
 def list_to_string(data):
     result = ""
     for text in data:
@@ -71,17 +67,19 @@ def list_to_string(data):
 
 
 
+#OCR로 받아온 텍스트 데이터에서 제품명 추출
 def get_product_name(data):
     try:
         #제품명이 포함 된 요소의 인덱스 찾기 
         start_index = next(
             (i for i, s in enumerate(data) if '제품명' in s), None
-        ) + 1
+        )
         if start_index is None:
             return '제품명이 없는듯?!'
+        start_index += 1
 
           # start_index = data.index('제품명') +1 
-        potential_end_keywords = ['식품유형', '내용량', '보관방법', '수입원']
+        potential_end_keywords = ['식품유형', '내용량', '보관방법', '수입원', '100']
 
         end_index = None
 
@@ -106,6 +104,7 @@ def get_product_name(data):
 
 
 
+#OCR로 받아온 텍스트 데이터에서 품목보고번호 추출
 def get_report_num(data):
     found = False
 
@@ -143,7 +142,6 @@ def get_serving_size(text):
 
     if match:
         value = match.group(1)
-        print(value)
         # 찾은 부분 안에서 숫자만 추출해낸다.
         refined_pattern = r'(\d{2,})'
         match = re.search(refined_pattern, value)
@@ -156,11 +154,11 @@ def get_serving_size(text):
     
     else: 
         return None
-    
 
 
 
-
+#Keyword 다음에 있는 숫자 추출
+#OCR로 받아온 데이터에서 '내용량' 추출할 때 사용
 def get_next_num_after_keyword(data, keyword):
     found = False
 
@@ -184,21 +182,33 @@ def get_next_num_after_keyword(data, keyword):
 
 
 
-
+#OCR로 뽑아 온 데이터에서 칼로리 추출
 def get_kcal_value(data):
     if '영양정보' in data:
         for i, item in enumerate(data):
-            if item in ['kcal', 'kcall'] and i>0:
+            if item in ['kcal', 'kcall', ' kcal'] and i>0:
                 kcal_value = data[i-1]
 
                 if kcal_value.isdigit():
-                    return int(kcal_value)
+                    return kcal_value
     return None
 
 
 
+#문자열에서 영양성분 있는 부분 추출
 def get_nutri_value(text, keyword):
     pattern = r'{}\s*(?:g)?\s*(\d+[\,]?\d*\.?\d*|\.\d+)\s*(?:g|mg)?'.format(keyword)
+    match = re.search(pattern, text)
+    if match:
+        value = match.group(1)
+        return value
+    return None
+
+
+
+#문자열에서 칼로리 추출
+def get_kcal_from_string(text):
+    pattern = r'(?:kcal|Kcal)?[\)]?\s*(\d+[\,]?\d*\.?\d*|\.\d+)\s*(?:kcal|Kcal)'
     match = re.search(pattern, text)
     if match:
         value = match.group(1)
@@ -207,21 +217,3 @@ def get_nutri_value(text, keyword):
                 
 
 
-data = fetch_data(image_url)
-
-# data = ['제품명 :', '팡올레', '식품유형 :', '빵류(가열하지', '않고', '섭취하는', '냉동식품)', '원재료명 :', '밀가루,스타터(밀가루,정제수,정제소금),계란,설탕,바터(우유),유채유,효모,탈지', '분유,글리세린지방산에스테르,정제소금,밀단백,밀글루텐,당근추출물,비타민C,', '우유단백', '밀,계란,우유', '함유', '제조원 :', 'BRIOCHE', 'PASQUIER', 'AUBIGNY', '원산지 :', '프랑스', '내용량 :', '280g(1,044kcal)', '업소명 및', '(주)에스에이치에스', '전화:070-7136-5973', '소재지 :']
-# print(data)
-# # serving = get_next_num_after_keyword(data, '내용량')
-# # print(serving)
-
-# product_name = get_product_name(data)
-# print(product_name)
-
-nutri_data = list_to_string(data)
-print(nutri_data)
-
-serving_size = get_serving_size(nutri_data)
-print(serving_size)
-
-# carb = get_nutri_value(nutri_data, '트랜스지방')
-# print(carb)
