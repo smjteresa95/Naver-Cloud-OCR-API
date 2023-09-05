@@ -46,7 +46,7 @@ def fetch_data(image_url):
 
     data = response.json()
 
-    if 'images' in data and len(data['images']) > 0:
+    if 'images' in data and len(data['images']) > 0 and 'fields' in data['images'][0]:
         # Extract all 'inferText' values from the 'fields' list inside the 'images' list
         infer_texts = [item['inferText'] for item in data['images'][0]['fields']]
 
@@ -59,16 +59,22 @@ def fetch_data(image_url):
 
 #list를 문자열로 변환
 def list_to_string(data):
-    result = ""
-    for text in data:
-        result += text
-    
-    return result 
+    if data is None:
+        return ""
+    else:
+        result = ""
+        for text in data:
+            result += text
+        
+        return result 
 
 
 
 #OCR로 받아온 텍스트 데이터에서 제품명 추출
 def get_product_name(data):
+
+    if data is None:
+        return "data is None"
     try:
         #제품명이 포함 된 요소의 인덱스 찾기 
         start_index = next(
@@ -95,9 +101,13 @@ def get_product_name(data):
 
         if end_index is None:
             # return data[start_index + 1]
-            return ''.join(data[start_index:])
+            product_name = ''.join(data[start_index:])
 
-        return ''.join(data[start_index:end_index])
+        else: 
+            product_name = ''.join(data[start_index:end_index])
+        
+        #product_name이 100자를 넘어가게되면 100자까지만 출력
+        return product_name[:100]
     
     except (ValueError, IndexError):
         return '제품명 없음'
@@ -106,6 +116,9 @@ def get_product_name(data):
 
 #OCR로 받아온 텍스트 데이터에서 품목보고번호 추출
 def get_report_num(data):
+    if data is None:
+        return 'data is None'
+    
     found = False
 
     for item in data:
@@ -160,6 +173,9 @@ def get_serving_size(text):
 #Keyword 다음에 있는 숫자 추출
 #OCR로 받아온 데이터에서 '내용량' 추출할 때 사용
 def get_next_num_after_keyword(data, keyword):
+    if data is None:
+        return "data is None"
+    
     found = False
 
     for item in data:
@@ -184,18 +200,22 @@ def get_next_num_after_keyword(data, keyword):
 
 #OCR로 뽑아 온 데이터에서 칼로리 추출
 def get_kcal_value(data):
-    if '영양정보' in data:
+    if data is None:
+        return 'data is None'
+    
+    elif '영양정보' in data:
         for i, item in enumerate(data):
             if item in ['kcal', 'kcall', ' kcal'] and i>0:
                 kcal_value = data[i-1]
 
                 if kcal_value.isdigit():
                     return kcal_value
-    return None
+    else:            
+        return None
 
 
 
-#문자열에서 영양성분 있는 부분 추출
+#문자열에서 영양성분 있는 부분 
 def get_nutri_value(text, keyword):
     pattern = r'{}\s*(?:g)?\s*(\d+[\,]?\d*\.?\d*|\.\d+)\s*(?:g|mg)?'.format(keyword)
     match = re.search(pattern, text)

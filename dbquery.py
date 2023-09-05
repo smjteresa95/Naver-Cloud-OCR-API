@@ -7,7 +7,6 @@ class dbQuery:
         self.cursor = self.conn.cursor()
 
 
-
     #전체 영양성분 이미지Url 가져오기
     def fetch_nutri_image(self, table_name):
         query = f'SELECT product_id, nutri_image FROM {table_name}'
@@ -26,9 +25,21 @@ class dbQuery:
             results = self.cursor.fetchall()
             return results
         except Exception as e:
-            print(f'Error occurred: {e}')
+            print(f'Error occurred in fetch_all_nutri_facts: {e}')
             return None
-        
+    
+
+    #전체 product_id, nutiri_image 가져오기    
+    def fetch_all_nutri_image(self, table_name):
+        query = f'SELECT {table_name}.product_id, {table_name}.nutri_image FROM {table_name}'
+        try:
+            self.cursor.execute(query)
+            results = self.cursor.fetchall()
+            return results
+        except Exception as e:
+            print(f'Error occurred in fetch_all_nutri_image: {e}')
+            return None
+
 
 
     #전체 product_id 가져오기
@@ -39,7 +50,7 @@ class dbQuery:
             results = self.cursor.fetchall()
             return results
         except Exception as e:
-            print(f'Error occurred: {e}')
+            print(f'Error occurred in fetch_all_product_id: {e}')
             return None
 
 
@@ -52,7 +63,7 @@ class dbQuery:
             results = self.cursor.fetchall()
             return results
         except Exception as e:
-            print(f'Error occurred: {e}')
+            print(f'Error occurred in fetch_all_nutri_image: {e}')
             return None
 
 
@@ -63,7 +74,16 @@ class dbQuery:
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
         return results
+    
 
+        #nutri_image 가져오기
+    def fetch_nutri_image(self, table_name, product_id):
+        #쿼리문에 product_id를 직접 넣어주는 것은 위험
+        query = f'SELECT nutri_image FROM {table_name} WHERE product_id = %s'
+        #DB fuction expects tuple or list for its param. 
+        self.cursor.execute(query, (product_id,))
+        results = self.cursor.fetchone()
+        return results
 
 
     #nutri_fact 가져오기
