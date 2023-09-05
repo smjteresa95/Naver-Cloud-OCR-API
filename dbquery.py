@@ -30,6 +30,7 @@ class dbQuery:
             return None
         
 
+
     #전체 product_id 가져오기
     def fetch_all_product_id(self, table_name):
         query = f'SELECT product_id FROM {table_name}'
@@ -42,6 +43,7 @@ class dbQuery:
             return None
 
 
+
     #전체 product_id, 성분표이미지 가져오기    
     def fetch_all_nutri_image(self, table_name):
         query = f'SELECT product_id, nutri_image FROM {table_name}'
@@ -52,6 +54,7 @@ class dbQuery:
         except Exception as e:
             print(f'Error occurred: {e}')
             return None
+
 
 
     #product_id로 nutri_facts와 nutri_image 가져오기
@@ -82,7 +85,27 @@ class dbQuery:
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
         return results
+    
 
+
+    #column에 단일 값 업데이트
+    def update_value(self, table_name, product_id, column_name, value):
+        query = f'''
+        UPDATE {table_name}
+        SET {column_name} = %s
+        WHERE product_id = %s
+        '''
+        self.cursor.execute(query, (value, product_id))
+        self.conn.commit()
+
+
+
+    #column에 단일 값 저장
+    def save_value(self, table_name, column_name, value):
+        query = f'INSERT INTO {table_name} ({column_name}) VALUES (%s)'
+        self.cursor.execute(query, (value,))
+        self.conn.commit()
+        
 
 
     #영양성분 이미지에서 뽑아온 데이터로 성분 컬럼 채우기
