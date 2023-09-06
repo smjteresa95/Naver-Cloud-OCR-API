@@ -75,6 +75,14 @@ class dbQuery:
         results = self.cursor.fetchone()
         return results
     
+    
+       #product_id로 sales_name 가져오기
+    def find_sales_name_by_id(self, table_name, product_id):
+        query = f'SELECT sales_name FROM {table_name} WHERE product_id = %s'
+        self.cursor.execute(query, (product_id,))
+        results = self.cursor.fetchone()
+        return results
+    
 
         #nutri_image 가져오기
     def fetch_nutri_image(self, table_name, product_id):

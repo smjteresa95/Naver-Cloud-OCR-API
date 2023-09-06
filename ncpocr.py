@@ -81,7 +81,7 @@ def get_product_name(data):
             (i for i, s in enumerate(data) if '제품명' in s), None
         )
         if start_index is None:
-            return '제품명이 없는듯?!'
+            return None
         start_index += 1
 
           # start_index = data.index('제품명') +1 

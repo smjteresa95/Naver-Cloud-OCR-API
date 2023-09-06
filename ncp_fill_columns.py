@@ -41,17 +41,25 @@ class NutriDataSaver:
         product_name_tuple = self.db.fetch_product_name(table_name, product_id)
         product_name = product_name_tuple[0]
 
-        #DB에 product_name이 없거나 '상세설명참조'로 되어있으면
-        if product_name is None or product_name == '상세설명참조':
+        try:
+            #DB에 product_name이 없거나 '상세설명참조'로 되어있으면
+            if product_name is None or product_name == '상세설명참조':
 
-            #제품명을 OCR에서 뽑아온 데이터로 만든 dictionary에서 
-            ocr_result = self.get_one_nutri_data_from_image(nutri_image)
-            product_name_val = ocr_result.get('product_name')
+                #제품명을 OCR에서 뽑아온 데이터로 만든 dictionary에서 
+                ocr_result = self.get_one_nutri_data_from_image(nutri_image)
+                #product_name 가지고 온다.
+                product_name_val = ocr_result.get('product_name')
+                if product_name_val: 
+                    self.db.update_value(table_name, product_id, 'product_name', product_name_val)
+                else:
+                    #sales_name 을 product_name에 저장해준다. 
+                    sales_name = self.db.find_sales_name_by_id(table_name, product_id)
+                    self.db.update_value(table_name, product_id, 'product_name', sales_name)
+        except Exception as e: 
+            print(f'{product_id} product name is null')
             
-            self.db.update_value(table_name, product_id, 'product_name', product_name_val)
 
-        else:
-            print(f'기존에 있던 {product_name} 으로 놔두면 됨')
+    
 
 
 
