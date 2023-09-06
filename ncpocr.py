@@ -160,7 +160,7 @@ def get_serving_size(text):
         match = re.search(refined_pattern, value)
 
         if match:
-            return match.group(1)
+            return float(match.group(1))
         
         else:
             return None
@@ -191,7 +191,7 @@ def get_next_num_after_keyword(data, keyword):
         if found:
             numbers = re.findall(r'(\d+\,?\d+\.?\d+)', item)
             if numbers:
-                return numbers[0]
+                return float(numbers[0].replace(',',''))
         
     #키워드 뒤에 숫자가 없으면 None을 반환한다.        
     return None
@@ -209,7 +209,7 @@ def get_kcal_value(data):
                 kcal_value = data[i-1]
 
                 if kcal_value.isdigit():
-                    return kcal_value
+                    return float(kcal_value)
     else:            
         return None
 
@@ -220,7 +220,7 @@ def get_nutri_value(text, keyword):
     pattern = r'{}\s*(?:g)?\s*(\d+[\,]?\d*\.?\d*|\.\d+)\s*(?:g|mg)?'.format(keyword)
     match = re.search(pattern, text)
     if match:
-        value = match.group(1)
+        value = float(match.group(1).replace(',',''))
         return value
     return None
 
@@ -231,7 +231,7 @@ def get_kcal_from_string(text):
     pattern = r'(?:kcal|Kcal)?[\)]?\s*(\d+[\,]?\d*\.?\d*|\.\d+)\s*(?:kcal|Kcal)'
     match = re.search(pattern, text)
     if match:
-        value = match.group(1)
+        value = float(match.group(1).replace(',',''))
         return value
     return None
                 

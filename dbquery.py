@@ -9,7 +9,7 @@ class dbQuery:
 
     #전체 영양성분 이미지Url 가져오기
     def fetch_nutri_image(self, table_name):
-        query = f'SELECT product_id, nutri_image FROM {table_name}'
+        query = f'SELECT product_id, nut_image FROM {table_name}'
 
         self. cursor.execute(query)
 
@@ -31,7 +31,7 @@ class dbQuery:
 
     #전체 product_id, nutiri_image 가져오기    
     def fetch_all_nutri_image(self, table_name):
-        query = f'SELECT {table_name}.product_id, {table_name}.nutri_image FROM {table_name}'
+        query = f'SELECT {table_name}.product_id, {table_name}.nut_image FROM {table_name}'
         try:
             self.cursor.execute(query)
             results = self.cursor.fetchall()
@@ -57,7 +57,7 @@ class dbQuery:
 
     #전체 product_id, 성분표이미지 가져오기    
     def fetch_all_nutri_image(self, table_name):
-        query = f'SELECT product_id, nutri_image FROM {table_name}'
+        query = f'SELECT product_id, nut_image FROM {table_name}'
         try:
             self.cursor.execute(query)
             results = self.cursor.fetchall()
@@ -70,7 +70,7 @@ class dbQuery:
 
     #product_id로 nutri_facts와 nutri_image 가져오기
     def find_nutri_facts_nutri_image_by_id(self, table_name, product_id):
-        query = f'SELECT nutri_facts, nutri_image FROM {table_name} WHERE product_id = %s'
+        query = f'SELECT nutri_facts, nut_image FROM {table_name} WHERE product_id = %s'
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
         return results
@@ -79,7 +79,7 @@ class dbQuery:
         #nutri_image 가져오기
     def fetch_nutri_image(self, table_name, product_id):
         #쿼리문에 product_id를 직접 넣어주는 것은 위험
-        query = f'SELECT nutri_image FROM {table_name} WHERE product_id = %s'
+        query = f'SELECT nut_image FROM {table_name} WHERE product_id = %s'
         #DB fuction expects tuple or list for its param. 
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
@@ -155,7 +155,6 @@ class dbQuery:
             self.conn.commit()
         except Exception as e:
             print(f'Error: {e}')
-    
 
 
     def close_database(self):

@@ -4,6 +4,7 @@ from ncpocr import (fetch_data, get_next_num_after_keyword, get_kcal_value,
                     get_serving_size)
 
 class NutriDataSaver:
+
     def __init__(self):
         self.db = dbQuery()
 
@@ -67,7 +68,7 @@ class NutriDataSaver:
         product_data['sodium'] = sodium
 
         carb = get_nutri_value(text, '탄수화물')
-        product_data['carb'] = carb
+        product_data['carbohydrate'] = carb
 
         sugar = get_nutri_value(text, '당류')
         product_data['sugar'] = sugar
@@ -132,7 +133,7 @@ class NutriDataSaver:
         product_data['sodium'] = sodium
 
         carb = get_nutri_value(nutri_data, '탄수화물')
-        product_data['carb'] = carb
+        product_data['carbohydrate'] = carb
 
         sugar = get_nutri_value(nutri_data, '당류')
         product_data['sugar'] = sugar
@@ -184,3 +185,6 @@ class NutriDataSaver:
                 self.db.update_nutri_facts(table_name, id, data)
             else: 
                 print(f"Data for product_id {id} is not a dictionary. Received: {data}")
+
+    
+    # def bulk_insert():
