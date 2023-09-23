@@ -1,9 +1,10 @@
+# 이부분은 현재 springboot에서 해주고 있어, 포함하지 않도록 한다. 
 import configparser
 from sqlalchemy import create_engine
 
 # Parse the config.ini file
 config = configparser.ConfigParser()
-config.read(r'C:\Users\msong\Desktop\Bootcamp\bitcamp\Project KINNI\VisionAPI\ncp_ocr\config.ini')
+config.read(r'config.ini')
 
 
 #Retreive database table as pandas DataFrame
@@ -40,10 +41,8 @@ select_clause = '''
     image
 '''
 
-ssg_df = pd.read_sql(f"SELECT {select_clause} FROM ssg_data", engine)
-oasis_df = pd.read_sql(f"SELECT {select_clause} FROM oasis_data", engine)
+rawdata_df = pd.read_sql(f"SELECT {select_clause} FROM rawdata", engine)
 
 #to_sql을 이용해 product table로 bulk insert
-ssg_df.to_sql(name='product', con=engine, if_exists='append', index=False)
-oasis_df.to_sql(name='product', con=engine, if_exists='append', index=False)
+# rawdata_df.to_sql(name='product', con=engine, if_exists='append', index=False)
 

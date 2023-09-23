@@ -9,7 +9,7 @@ class dbQuery:
 
     #전체 영양성분 이미지Url 가져오기
     def fetch_nutri_image(self, table_name):
-        query = f'SELECT product_id, nut_image FROM {table_name}'
+        query = f'SELECT rawdata_id, nut_image FROM {table_name}'
 
         self. cursor.execute(query)
 
@@ -19,7 +19,7 @@ class dbQuery:
 
     #전체 product_id, 영양성분 문자열 가져오기    
     def fetch_all_nutri_facts(self, table_name):
-        query = f'SELECT product_id, nutri_facts FROM {table_name}'
+        query = f'SELECT rawdata_id, nutri_facts FROM {table_name}'
         try:
             self.cursor.execute(query)
             results = self.cursor.fetchall()
@@ -31,7 +31,7 @@ class dbQuery:
 
     #전체 product_id, nutiri_image 가져오기    
     def fetch_all_nutri_image(self, table_name):
-        query = f'SELECT {table_name}.product_id, {table_name}.nut_image FROM {table_name}'
+        query = f'SELECT {table_name}.rawdata_id, {table_name}.nut_image FROM {table_name}'
         try:
             self.cursor.execute(query)
             results = self.cursor.fetchall()
@@ -44,7 +44,7 @@ class dbQuery:
 
     #전체 product_id 가져오기
     def fetch_all_product_id(self, table_name):
-        query = f'SELECT product_id FROM {table_name}'
+        query = f'SELECT rawdata_id FROM {table_name}'
         try:
             self.cursor.execute(query)
             results = self.cursor.fetchall()
@@ -57,7 +57,7 @@ class dbQuery:
 
     #전체 product_id, 성분표이미지 가져오기    
     def fetch_all_nutri_image(self, table_name):
-        query = f'SELECT product_id, nut_image FROM {table_name}'
+        query = f'SELECT rawdata_id, nut_image FROM {table_name}'
         try:
             self.cursor.execute(query)
             results = self.cursor.fetchall()
@@ -70,7 +70,7 @@ class dbQuery:
 
     #product_id로 nutri_facts와 nutri_image 가져오기
     def find_nutri_facts_nutri_image_by_id(self, table_name, product_id):
-        query = f'SELECT nutri_facts, nut_image FROM {table_name} WHERE product_id = %s'
+        query = f'SELECT nutri_facts, nut_image FROM {table_name} WHERE rawdata_id = %s'
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
         return results
@@ -78,7 +78,7 @@ class dbQuery:
     
        #product_id로 sales_name 가져오기
     def find_sales_name_by_id(self, table_name, product_id):
-        query = f'SELECT sales_name FROM {table_name} WHERE product_id = %s'
+        query = f'SELECT sales_name FROM {table_name} WHERE rawdata_id = %s'
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
         return results
@@ -87,7 +87,7 @@ class dbQuery:
         #nutri_image 가져오기
     def fetch_nutri_image(self, table_name, product_id):
         #쿼리문에 product_id를 직접 넣어주는 것은 위험
-        query = f'SELECT nut_image FROM {table_name} WHERE product_id = %s'
+        query = f'SELECT nut_image FROM {table_name} WHERE rawdata_id = %s'
         #DB fuction expects tuple or list for its param. 
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
@@ -97,7 +97,7 @@ class dbQuery:
     #nutri_fact 가져오기
     def fetch_nutri_fact(self, table_name, product_id):
         #쿼리문에 product_id를 직접 넣어주는 것은 위험
-        query = f'SELECT nutri_facts FROM {table_name} WHERE product_id = %s'
+        query = f'SELECT nutri_facts FROM {table_name} WHERE rawdata_id = %s'
         #DB fuction expects tuple or list for its param. 
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
@@ -108,7 +108,7 @@ class dbQuery:
     #product_name 가져오기
     def fetch_product_name(self, table_name, product_id):
         #쿼리문에 product_id를 직접 넣어주는 것은 위험
-        query = f'SELECT product_name FROM {table_name} WHERE product_id = %s'
+        query = f'SELECT product_name FROM {table_name} WHERE rawdata_id = %s'
         #DB fuction expects tuple or list for its param. 
         self.cursor.execute(query, (product_id,))
         results = self.cursor.fetchone()
@@ -121,7 +121,7 @@ class dbQuery:
         query = f'''
         UPDATE {table_name}
         SET {column_name} = %s
-        WHERE product_id = %s
+        WHERE rawdata_id = %s
         '''
         self.cursor.execute(query, (value, product_id))
         self.conn.commit()
@@ -151,7 +151,7 @@ class dbQuery:
         query = f'''
         UPDATE {table_name}
         SET {set_clause}
-        WHERE product_id = %s
+        WHERE rawdata_id = %s
         '''
 
         #data에서 value 꺼내오기

@@ -1,6 +1,6 @@
 import configparser
 
-import requests
+import requests 
 import uuid
 import time
 import json
@@ -11,7 +11,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
 
 config = configparser.ConfigParser()
-config.read(r'C:\Users\msong\Desktop\Bootcamp\bitcamp\Project KINNI\VisionAPI\vision_api\config.ini')
+config.read(r'C:\Users\minje\OneDrive\Desktop\project KKINI\Naver-Cloud-OCR-API\config.ini')
 
 
 #json 형식으로 데이터 뽑아온 후 텍스트로 바꿔오기

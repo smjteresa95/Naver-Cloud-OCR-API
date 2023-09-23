@@ -4,7 +4,7 @@ import configparser
 import sys, io
 
 config = configparser.ConfigParser()
-config.read(r'C:\Users\msong\Desktop\Bootcamp\bitcamp\Project KINNI\VisionAPI\ncp_ocr\config.ini')
+config.read(r'C:\Users\minje\OneDrive\Desktop\project KKINI\Naver-Cloud-OCR-API\config.ini')
 
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
