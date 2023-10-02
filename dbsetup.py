@@ -1,10 +1,11 @@
 #pip install mysql-connector-python
 import mysql.connector
 import configparser
-import sys, io
+import sys, io, os
 
 config = configparser.ConfigParser()
-config.read(r'C:\Users\minje\OneDrive\Desktop\project KKINI\Naver-Cloud-OCR-API\config.ini')
+config_file_path = os.path.join(os.path.dirname(__file__), 'config.ini')
+config.read(config_file_path)
 
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')

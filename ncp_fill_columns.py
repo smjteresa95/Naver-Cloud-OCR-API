@@ -1,3 +1,4 @@
+#OCR로 추출한 텍스트 데이터 전처리 해서 DB에 값 넣는 작업.
 from dbquery import dbQuery
 from ncpocr import (fetch_data, get_next_num_after_keyword, get_kcal_value, 
                     get_report_num, list_to_string, get_nutri_value, get_product_name,

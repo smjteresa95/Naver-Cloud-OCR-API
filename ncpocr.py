@@ -1,17 +1,19 @@
+#OCR로 추출 한 텍스트 데이터에서 필요한 부분만 뽑는 작업.
 import configparser
 
 import requests 
 import uuid
 import time
 import json
-import io, sys, re
+import io, sys, re, os
 
 # 파이썬의 표준 출력과 표준 에러 출력을 UTF-8 인코딩으로 변경하는 코드
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
 
 config = configparser.ConfigParser()
-config.read(r'C:\Users\minje\OneDrive\Desktop\project KKINI\Naver-Cloud-OCR-API\config.ini')
+config_file_path = os.path.join(os.path.dirname(__file__), 'config.ini')
+config.read(config_file_path)
 
 
 #json 형식으로 데이터 뽑아온 후 텍스트로 바꿔오기
@@ -45,6 +47,7 @@ def fetch_data(image_url):
     response = requests.post(api_url, data=json.dumps(request_json).encode('UTF-8'), headers=headers)
 
     data = response.json()
+    
 
     if 'images' in data and len(data['images']) > 0 and 'fields' in data['images'][0]:
         # Extract all 'inferText' values from the 'fields' list inside the 'images' list
@@ -65,7 +68,7 @@ def list_to_string(data):
         result = ""
         for text in data:
             result += text
-        
+        print(result)
         return result 
 
 

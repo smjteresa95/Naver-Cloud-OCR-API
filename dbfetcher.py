@@ -1,10 +1,12 @@
 # 이부분은 현재 springboot에서 해주고 있어, 포함하지 않도록 한다. 
 import configparser
 from sqlalchemy import create_engine
+import os
 
 # Parse the config.ini file
 config = configparser.ConfigParser()
-config.read(r'config.ini')
+config_file_path = os.path.join(os.path.dirname(__file__), 'config.ini')
+config.read(config_file_path)
 
 
 #Retreive database table as pandas DataFrame

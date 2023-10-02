@@ -1,3 +1,4 @@
+#쿼리문 함수
 from dbsetup import get_connection
 
 class dbQuery:
@@ -121,7 +122,7 @@ class dbQuery:
         query = f'''
         UPDATE {table_name}
         SET {column_name} = %s
-        WHERE rawdata_id = %s
+        WHERE rawdata_id = %s AND is_modified=false
         '''
         self.cursor.execute(query, (value, product_id))
         self.conn.commit()
@@ -129,10 +130,10 @@ class dbQuery:
 
 
     #column에 단일 값 저장
-    def save_value(self, table_name, column_name, value):
-        query = f'INSERT INTO {table_name} ({column_name}) VALUES (%s)'
-        self.cursor.execute(query, (value,))
-        self.conn.commit()
+    # def save_value(self, table_name, column_name, value):
+    #     query = f'INSERT INTO {table_name} ({column_name}) VALUES (%s)'
+    #     self.cursor.execute(query, (value,))
+    #     self.conn.commit()
         
 
 
@@ -148,14 +149,18 @@ class dbQuery:
         #.item() 으로 key와 value 값을 각각 묶어 list로 만들 수 있다. 
         set_clause = ', '.join([f"{key} = %s" for key in data.keys()])
 
+        #기존에 있던 값과 넣으려는 값이 다른지 확인
+        # where_conditions = ' AND '.join([f"{key} <> %s" for key in data.keys()])
+
         query = f'''
         UPDATE {table_name}
         SET {set_clause}
-        WHERE rawdata_id = %s
+        WHERE rawdata_id = %s AND is_modified=false
         '''
 
         #data에서 value 꺼내오기
         values = list(data.values())
+        # values.extend(data.values())  # Duplicate the list for the WHERE clause conditions.
         values.append(product_id)
 
         try:
