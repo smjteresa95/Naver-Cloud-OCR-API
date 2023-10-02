@@ -6,18 +6,21 @@ As a part of a Kkini project, our team needed nutrition information for each foo
 
 <h3 align="left">How to use the project</h3>
 database info, and api key are stored in config.ini file. which is currently ignored by git. <br>
+
 ```
+# config.ini
 [NCPOCR]
-api_url = 
-secret_key = 
+api_url =  # Fill in the API URL
+secret_key =  # Fill in the secret key
 
 [database]
-host = 
+host =  # Fill in the database host
 port = 3306
-user = 
-password = 
-db = 
+user =  # Fill in the database user
+password =  # Fill in the database password
+db =  # Fill in the database name
 charset = utf8mb4
 ```
-<br>need to make a config.ini file then fill out the blanks. 
+
+<br>Create a `config.ini` file with the necessary information for connecting to the Naver Cloud OCR API and the database. The comments (`# Fill in ...`) are used to indicate where to enter the information. 
 
