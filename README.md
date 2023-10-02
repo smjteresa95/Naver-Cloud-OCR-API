@@ -19,5 +19,5 @@ password =
 db = 
 charset = utf8mb4
 ```
-need to make a config.ini file then fill out the blanks. 
+<br>need to make a config.ini file then fill out the blanks. 
 
