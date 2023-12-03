@@ -3,7 +3,7 @@ Extract nutrition data using Naver Cloud OCR API
 
 <h3 align="left">Project description:</h3>
 As a part of a Kkini project, our team needed nutrition information for each food product. After getting the nutrition facts images by web scraping, fetch text from the image via OCR API. Process text data as needed then save them into the database.
-
+</br></br>
 Kkini project의 일부로, 서비스를 하기 위해 식품의 영양성분 데이터가 필요하지만 데이터를 얻어올 방법이 없어 추가적으로 만들었습니다.            
 Naver Clova의 OCR (Optical Character Recognition) API를 사용하여 영양성분표 이미지에서 필요한 데이터를 추출하고 가공하는 Python 스크립트입니다. 데이터베이스에 저장된 영양성분표 이미지를 분석하여 중요한 영양 정보를 자동으로 식별하고 추출합니다. 추출된 데이터는 필요에 맞게 가공되어 다시 데이터베이스에 저장됩니다. 
 
