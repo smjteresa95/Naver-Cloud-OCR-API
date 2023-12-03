@@ -4,7 +4,7 @@ Extract nutrition data using Naver Cloud OCR API
 <h3 align="left">Project description:</h3>
 As a part of a Kkini project, our team needed nutrition information for each food product. After getting the nutrition facts images by web scraping, fetch text from the image via OCR API. Process text data as needed then save them into the database.
 
-<h3 align="left">How to use the project</h3>
+<h3 align="left">Set up</h3>
 Database info, and api key are stored in config.ini file. which is currently ignored by git. <br>
 
 ```
@@ -23,4 +23,18 @@ charset = utf8mb4
 ```
 
 Create a `config.ini` file with the necessary information for connecting to the Naver Cloud OCR API and the database. The comments (`# Fill in ...`) are used to indicate where to enter the information. 
+
+```
+pip install sqlalchemy
+```
+
+```
+pip install pandas
+```
+
+<h3 align="left">How to use</h3>
+
+run execute.py file
+
+
 
